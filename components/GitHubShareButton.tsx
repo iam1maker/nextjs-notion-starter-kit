@@ -11,7 +11,7 @@ export const GitHubShareButton: React.FC = () => {
       className={styles.githubCorner}
       aria-label='View source on GitHub'
     >
-<!--       <svg
+      <svg
         width='80'
         height='80'
         viewBox='0 0 250 250'
@@ -42,7 +42,7 @@ export const GitHubShareButton: React.FC = () => {
           fill='currentColor'
           className={styles.octoBody}
         />
-      </svg> -->
+      </svg>
     </a>
   )
 }
