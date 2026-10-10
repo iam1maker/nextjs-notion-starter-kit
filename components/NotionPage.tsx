@@ -17,6 +17,7 @@ import {
   NotionRenderer,
   useNotionContext
 } from 'react-notion-x'
+import type { PageBlock } from 'notion-types'
 import { Collection } from 'react-notion-x/third-party/collection'
 import { EmbeddedTweet, TweetNotFound, TweetSkeleton } from 'react-tweet'
 import { useSearchParam } from 'react-use'
@@ -32,6 +33,7 @@ import { Footer } from './Footer'
 import { GitHubShareButton } from './GitHubShareButton'
 import { NotionPageHeader } from './NotionPageHeader'
 import { PageAside } from './PageAside'
+import { ResumeToc } from './ResumeToc'
 
 // -----------------------------------------------------------------------------
 // dynamic imports for optional components
@@ -283,6 +285,10 @@ export function NotionPage({
         pageAside={pageAside}
         footer={<Footer />}
       />
+
+      {isResumePage && (
+        <ResumeToc block={block as PageBlock} recordMap={recordMap} />
+      )}
 
       <GitHubShareButton />
     </>

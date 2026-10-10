@@ -1,0 +1,104 @@
+/* mini table of contents pinned to the right edge of the resume page */
+
+.toc {
+  --toc-accent: #2f6fde;
+  --toc-fg: rgb(55, 53, 47);
+  --toc-muted: rgba(55, 53, 47, 0.45);
+  --toc-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  position: fixed;
+  top: 50%;
+  right: 28px;
+  z-index: 50;
+  display: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  transform: translateY(-50%);
+}
+
+:global(.dark-mode) .toc {
+  --toc-accent: #70b7fd;
+  --toc-fg: rgba(255, 255, 255, 0.9);
+  --toc-muted: rgba(255, 255, 255, 0.45);
+}
+
+/* only where the right gutter is wide enough to not cover the content */
+@media (min-width: 1100px) {
+  .toc {
+    display: flex;
+  }
+}
+
+@media print {
+  .toc {
+    display: none;
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 7px 0 7px 12px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--toc-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.label {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  opacity: 0;
+  transform: translateX(6px);
+  transition:
+    opacity 0.3s var(--toc-ease),
+    transform 0.3s var(--toc-ease),
+    color 0.2s var(--toc-ease);
+}
+
+.num {
+  font-family:
+    ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0;
+  color: var(--toc-accent);
+}
+
+.bar {
+  width: 14px;
+  height: 1px;
+  background: currentcolor;
+  transition:
+    width 0.35s var(--toc-ease),
+    background-color 0.2s var(--toc-ease);
+}
+
+/* the whole rail reveals its labels on hover; the current one always shows */
+
+.toc:hover .label,
+.active .label {
+  opacity: 1;
+  transform: none;
+}
+
+.item:hover,
+.active {
+  color: var(--toc-fg);
+}
+
+.item:hover .bar {
+  width: 24px;
+}
+
+.active .bar {
+  width: 36px;
+  background: var(--toc-accent);
+}
+
+.item:focus-visible {
+  outline: 1px solid var(--toc-accent);
+  outline-offset: 2px;
+}
