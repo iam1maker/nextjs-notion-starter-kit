@@ -8,6 +8,9 @@ export default siteConfig({
   // (this should be a Notion ID; see the docs for how to extract this)
   rootNotionSpaceId: null,
 
+  // the resume page gets its own custom styling (optional)
+  resumeNotionPageId: '71f287db4fdc4cb68f6473930fe0a8c3',
+
   // basic site info (required)
   name: '1maker',
   domain: '1maker',

@@ -33,6 +33,10 @@ if (!rootNotionPageId) {
 export const rootNotionSpaceId: string | null =
   parsePageId(getSiteConfig('rootNotionSpaceId'), { uuid: true }) ?? null
 
+// the resume page gets its own custom styling (optional)
+export const resumeNotionPageId: string | null =
+  parsePageId(getSiteConfig('resumeNotionPageId'), { uuid: false }) ?? null
+
 export const pageUrlOverrides = cleanPageUrlMap(
   getSiteConfig('pageUrlOverrides', {}) || {},
   { label: 'pageUrlOverrides' }

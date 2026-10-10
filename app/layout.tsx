@@ -10,6 +10,8 @@ import '@/styles/global.css'
 import '@/styles/notion.css'
 // global style overrides for prism theme (optional)
 import '@/styles/prism-theme.css'
+// custom skin for the resume page (scoped to body.resume-page)
+import '@/styles/resume.css'
 
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'

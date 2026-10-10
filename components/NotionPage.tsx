@@ -4,7 +4,12 @@ import cs from 'classnames'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatDate, getBlockTitle, getBlockValue } from 'notion-utils'
+import {
+  formatDate,
+  getBlockTitle,
+  getBlockValue,
+  parsePageId
+} from 'notion-utils'
 import * as React from 'react'
 import BodyClassName from 'react-body-classname'
 import {
@@ -218,7 +223,11 @@ export function NotionPage({
   const isBlogPost =
     block?.type === 'page' && block?.parent_table === 'collection'
 
-  const showTableOfContents = !!isBlogPost
+  const isResumePage =
+    !!config.resumeNotionPageId &&
+    parsePageId(pageId, { uuid: false }) === config.resumeNotionPageId
+
+  const showTableOfContents = !!isBlogPost && !isResumePage
   const minTableOfContentsItems = 3
 
   const pageAside = React.useMemo(
@@ -251,7 +260,10 @@ export function NotionPage({
       {isLiteMode && <BodyClassName className='notion-lite' />}
 
       <NotionRenderer
-        bodyClassName={cs(pageId === site.rootNotionPageId && 'index-page')}
+        bodyClassName={cs(
+          pageId === site.rootNotionPageId && 'index-page',
+          isResumePage && 'resume-page'
+        )}
         darkMode={isDarkMode}
         components={notionRendererComponents}
         recordMap={recordMap}

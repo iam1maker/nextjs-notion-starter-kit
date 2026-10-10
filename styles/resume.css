@@ -1,0 +1,272 @@
+/**
+ * Minimal editorial skin for the resume page.
+ *
+ * Every rule is scoped to `.notion-app:has(.resume-page)`. The `resume-page`
+ * class is set on the server-rendered page body only when the current page
+ * matches `resumeNotionPageId` in site.config.ts, so there is no unstyled flash.
+ *
+ * Expected Notion content structure:
+ * - H1 (name), then a subtitle line and a meta / contact line
+ * - H3 per section (auto-numbered 01, 02, …)
+ * - H4 per entry, with the date range as gray inline text at the end
+ * - the first line after an H4 is the role / location line
+ * - a line made only of `inline code` renders as tech-stack tags
+ */
+
+.notion-app:has(.resume-page) {
+  --notion-max-width: 760px;
+  --resume-accent: #2f6fde;
+  --resume-line: rgba(55, 53, 47, 0.12);
+  --resume-muted: rgba(55, 53, 47, 0.55);
+  --resume-mono:
+    ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+  --resume-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.notion-app.dark-mode:has(.resume-page) {
+  --resume-accent: #70b7fd;
+  --resume-line: rgba(255, 255, 255, 0.12);
+  --resume-muted: rgba(255, 255, 255, 0.5);
+}
+
+/* page chrome: drop the stock cover, icon, properties and anchors */
+
+.notion-app:has(.resume-page) .notion-page-cover-wrapper,
+.notion-app:has(.resume-page) .notion-page-icon-hero,
+.notion-app:has(.resume-page) .notion-collection-page-properties,
+.notion-app:has(.resume-page) .notion-hash-link,
+.notion-app:has(.resume-page) .notion-hr {
+  display: none;
+}
+
+.notion-app:has(.resume-page) .notion-page {
+  padding-top: clamp(48px, 12vh, 128px);
+}
+
+/* the page title ("简历") becomes a small eyebrow label above the name */
+
+.notion-app:has(.resume-page) .notion-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  color: var(--resume-muted);
+}
+
+.notion-app:has(.resume-page) .notion-title::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--resume-accent);
+}
+
+/* hero: name + subtitle + meta line */
+
+.notion-app:has(.resume-page) .notion-h1 {
+  margin-top: 18px;
+  font-size: clamp(48px, 10vw, 88px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.notion-app:has(.resume-page) .notion-h1 + .notion-text {
+  margin-top: 22px;
+  font-size: clamp(17px, 2.4vw, 21px);
+  line-height: 1.5;
+}
+
+.notion-app:has(.resume-page) .notion-h1 + .notion-text + .notion-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--resume-muted);
+}
+
+.notion-app:has(.resume-page) .notion-link {
+  color: var(--resume-accent);
+  border-bottom: 1px solid currentcolor;
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* sections: numbered labels with a hairline */
+
+.notion-app:has(.resume-page) .notion-page-content-inner {
+  counter-reset: resume-section;
+}
+
+.notion-app:has(.resume-page) .notion-h3 {
+  counter-increment: resume-section;
+  width: 100%;
+  margin-top: 88px;
+  padding-top: 20px;
+  border-top: 1px solid var(--resume-line);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--resume-muted);
+}
+
+.notion-app:has(.resume-page) .notion-h3 .notion-h-title::before {
+  content: counter(resume-section, decimal-leading-zero);
+  margin-right: 16px;
+  font-family: var(--resume-mono);
+  letter-spacing: 0;
+  color: var(--resume-accent);
+}
+
+/* lead paragraph directly under a section label */
+
+.notion-app:has(.resume-page) .notion-h3 + .notion-text {
+  margin-top: 20px;
+  font-size: 1.15em;
+  line-height: 1.8;
+}
+
+/* entries: title on the left, date range on the right */
+
+.notion-app:has(.resume-page) .notion-h4 {
+  width: 100%;
+  margin-top: 48px;
+  font-size: 1.25em;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.notion-app:has(.resume-page) .notion-h3 + .notion-h4 {
+  margin-top: 24px;
+}
+
+.notion-app:has(.resume-page) .notion-h4 .notion-h-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: 24px;
+  row-gap: 4px;
+}
+
+.notion-app:has(.resume-page) .notion-h4 .notion-gray {
+  font-family: var(--resume-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--resume-muted);
+  white-space: nowrap;
+}
+
+.notion-app:has(.resume-page) .notion-h4 + .notion-text {
+  padding-top: 0;
+  font-size: 14px;
+  color: var(--resume-muted);
+}
+
+/* lists */
+
+.notion-app:has(.resume-page) .notion-list-disc {
+  padding-inline-start: 1.4em;
+  list-style-type: '—';
+}
+
+.notion-app:has(.resume-page) .notion-list-disc li {
+  padding-inline-start: 0.7em;
+}
+
+.notion-app:has(.resume-page) .notion-list li::marker {
+  color: var(--resume-accent);
+}
+
+/* a line of `inline code` = tech-stack tags */
+
+.notion-app:has(.resume-page) .notion-text:has(> .notion-inline-code) {
+  margin-top: 10px;
+  line-height: 2.3;
+}
+
+/* !important: prism-theme.css forces inline-code background and padding */
+.notion-app:has(.resume-page) .notion-inline-code {
+  padding: 3px 10px !important;
+  border: 1px solid var(--resume-line);
+  border-radius: 999px;
+  background: transparent !important;
+  font-family: var(--resume-mono);
+  font-size: 12px;
+  color: inherit;
+  transition:
+    border-color 0.2s var(--resume-ease),
+    color 0.2s var(--resume-ease);
+}
+
+.notion-app:has(.resume-page) .notion-inline-code:hover {
+  border-color: var(--resume-accent);
+  color: var(--resume-accent);
+}
+
+/* motion: hero rises in on load, entries reveal on scroll */
+
+@keyframes resume-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .notion-app:has(.resume-page) .notion-title,
+  .notion-app:has(.resume-page) .notion-h1,
+  .notion-app:has(.resume-page) .notion-h1 + .notion-text,
+  .notion-app:has(.resume-page) .notion-h1 + .notion-text + .notion-text {
+    animation: resume-rise 0.9s var(--resume-ease) both;
+  }
+
+  .notion-app:has(.resume-page) .notion-h1 {
+    animation-delay: 0.08s;
+  }
+
+  .notion-app:has(.resume-page) .notion-h1 + .notion-text {
+    animation-delay: 0.18s;
+  }
+
+  .notion-app:has(.resume-page) .notion-h1 + .notion-text + .notion-text {
+    animation-delay: 0.26s;
+  }
+
+  @supports (animation-timeline: view()) {
+    .notion-app:has(.resume-page) .notion-h3,
+    .notion-app:has(.resume-page) .notion-h4 {
+      animation: resume-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+
+/* print / save as PDF straight from the page */
+
+@media print {
+  .notion-app:has(.resume-page) .notion-header,
+  .notion-app:has(.resume-page) footer,
+  body:has(.resume-page) [class*='githubCorner'] {
+    display: none !important;
+  }
+
+  .notion-app:has(.resume-page) * {
+    animation: none !important;
+  }
+
+  .notion-app:has(.resume-page) .notion-page {
+    padding-top: 0;
+  }
+
+  .notion-app:has(.resume-page) .notion-h3 {
+    margin-top: 40px;
+    break-after: avoid;
+  }
+
+  .notion-app:has(.resume-page) .notion-h4 {
+    break-after: avoid;
+  }
+}
