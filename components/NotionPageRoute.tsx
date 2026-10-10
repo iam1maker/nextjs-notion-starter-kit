@@ -12,6 +12,7 @@ export function NotionPageRoute({ pageProps }: { pageProps: PageProps }) {
   const { error, pageId, recordMap, site } = pageProps
 
   if (error || !pageId || !recordMap || !site) {
+    console.warn('notion page not found', { pageId, error })
     notFound()
   }
 

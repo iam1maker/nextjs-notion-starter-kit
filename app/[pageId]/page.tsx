@@ -31,16 +31,26 @@ export async function generateStaticParams() {
   return pageIds.map((pageId) => ({ pageId }))
 }
 
+// non-ascii slugs (e.g. chinese page titles) may arrive percent-encoded
+// depending on the hosting platform, but the site map keys are decoded
+function decodePageId(pageId: string): string {
+  try {
+    return decodeURIComponent(pageId)
+  } catch {
+    return pageId
+  }
+}
+
 export async function generateMetadata({
   params
 }: DynamicPageProps): Promise<Metadata> {
-  const { pageId } = await params
+  const pageId = decodePageId((await params).pageId)
 
   return createPageMetadata(await getPageData(pageId))
 }
 
 export default async function DynamicPage({ params }: DynamicPageProps) {
-  const { pageId } = await params
+  const pageId = decodePageId((await params).pageId)
   const pageProps = await getPageData(pageId)
 
   return <NotionPageRoute pageProps={pageProps} />
