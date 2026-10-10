@@ -1,5 +1,4 @@
-import { ExtendedRecordMap, PageMap } from 'notion-types'
-import { ParsedUrlQuery } from 'querystring'
+import type { ExtendedRecordMap, PageMap } from 'notion-types'
 
 export * from 'notion-types'
 
@@ -17,8 +16,8 @@ export interface PageProps {
   error?: PageError
 }
 
-export interface Params extends ParsedUrlQuery {
-  pageId: string
+export interface ExtendedTweetRecordMap extends ExtendedRecordMap {
+  tweets: Record<string, any>
 }
 
 export interface Site {
@@ -26,7 +25,7 @@ export interface Site {
   domain: string
 
   rootNotionPageId: string
-  rootNotionSpaceId: string
+  rootNotionSpaceId: string | null
 
   // settings
   html?: string
@@ -64,9 +63,9 @@ export interface PageUrlOverridesInverseMap {
 export interface NotionPageInfo {
   pageId: string
   title: string
-  image: string
-  imageObjectPosition: string
-  author: string
-  authorImage: string
-  detail: string
+  image?: string
+  imageObjectPosition?: string
+  author?: string
+  authorImage?: string
+  detail?: string
 }

@@ -1,34 +1,18 @@
-import type { GetServerSideProps } from 'next'
-
 import { host } from '@/lib/config'
 import { getSiteMap } from '@/lib/get-site-map'
 import type { SiteMap } from '@/lib/types'
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  if (req.method !== 'GET') {
-    res.statusCode = 405
-    res.setHeader('Content-Type', 'application/json')
-    res.write(JSON.stringify({ error: 'method not allowed' }))
-    res.end()
-    return {
-      props: {}
-    }
-  }
+export const revalidate = 28_800
 
+export async function GET() {
   const siteMap = await getSiteMap()
 
-  // cache for up to 8 hours
-  res.setHeader(
-    'Cache-Control',
-    'public, max-age=28800, stale-while-revalidate=28800'
-  )
-  res.setHeader('Content-Type', 'text/xml')
-  res.write(createSitemap(siteMap))
-  res.end()
-
-  return {
-    props: {}
-  }
+  return new Response(createSitemap(siteMap), {
+    headers: {
+      'Cache-Control': 'public, max-age=28800, stale-while-revalidate=28800',
+      'Content-Type': 'text/xml'
+    }
+  })
 }
 
 const createSitemap = (siteMap: SiteMap) =>
@@ -53,5 +37,3 @@ const createSitemap = (siteMap: SiteMap) =>
       .join('')}
   </urlset>
 `
-
-export default () => null

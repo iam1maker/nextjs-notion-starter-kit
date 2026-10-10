@@ -4,11 +4,31 @@
   </a>
 </p>
 
-# Next.js Notion Starter Kit
+# Next.js Notion Starter Kit <!-- omit from toc -->
 
 > The perfect starter kit for building websites with Next.js and Notion.
 
-[![Build Status](https://github.com/transitive-bullshit/nextjs-notion-starter-kit/actions/workflows/build.yml/badge.svg)](https://github.com/transitive-bullshit/nextjs-notion-starter-kit/actions/workflows/build.yml) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
+[![Build Status](https://github.com/transitive-bullshit/nextjs-notion-starter-kit/actions/workflows/build.yml/badge.svg)](https://github.com/transitive-bullshit/nextjs-notion-starter-kit/actions/workflows/build.yml) [![Code style enforced by Oxc](https://img.shields.io/badge/code_style-oxc-brightgreen.svg)](https://oxc.rs)
+
+- [Intro](#intro)
+- [Features](#features)
+- [Demos](#demos)
+- [Setup](#setup)
+  - [Vercel Configuration](#vercel-configuration)
+- [URL Paths](#url-paths)
+- [Preview Images](#preview-images)
+  - [Redis](#redis)
+- [Styles](#styles)
+- [Dark Mode](#dark-mode)
+- [Automatic Social Images](#automatic-social-images)
+- [Automatic Table of Contents](#automatic-table-of-contents)
+- [Responsive](#responsive)
+- [Analytics](#analytics)
+  - [Fathom Analytics](#fathom-analytics)
+  - [PostHog Analytics](#posthog-analytics)
+- [Environment Variables](#environment-variables)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Intro
 
@@ -40,13 +60,14 @@ It uses Notion as a CMS, [react-notion-x](https://github.com/NotionX/react-notio
 
 **All config is defined in [site.config.ts](./site.config.ts).**
 
-This project requires a recent version of Node.js (we recommend >= 16).
+This project requires Node.js 22 or newer.
 
 1. Fork / clone this repo
 2. Change a few values in [site.config.ts](./site.config.ts)
-3. `npm install`
-4. `npm run dev` to test locally
-5. `npm run deploy` to deploy to vercel 💪
+3. `pnpm install`
+4. `pnpm dev` to test locally
+5. `pnpm deploy` to deploy to Vercel 💪
+6. Double check your [Vercel project settings](#vercel-configuration)
 
 I tried to make configuration as easy as possible — All you really need to do to get started is edit `rootNotionPageId`.
 
@@ -57,6 +78,16 @@ Make sure your root Notion page is **public** and then copy the link to your cli
 In order to find your Notion workspace ID (optional), just load any of your site's pages into your browser and open up the developer console. There will be a global variable that you can access called `block` which is the Notion data for the current page. If you enter `block.space_id`, it will print out your page's workspace ID.
 
 I recommend setting up a collection on your home page that contains all of your articles / projects / content. There are no structural constraints on your Notion workspace, however, so feel free to add content as you normally would in Notion.
+
+### Vercel Configuration
+
+**Social media preview images won't work by default on Vercel**. You'll need to ensure that your site doesn't require auth.
+
+From your Vercel project settings, you'll want to **disable Vercel Authentication** from `Project -> Settings -> Deployment Protection`.
+
+![How to disable Vercel Deployment Protection setting](https://github.com/user-attachments/assets/a1eb5a1f-da7a-497e-b4f6-f7e851a6cd8a 'How to disable Vercel Deployment Protection setting which causes social media preview image endpoint to return 401 Unauthorized')
+
+💡 If you forget to do this your site will return `401 Unauthorized` responses when crawlers are trying to retrieve the images.
 
 ## URL Paths
 
@@ -129,7 +160,7 @@ Dark mode is fully supported and can be toggled via the sun / moon icon in the f
 
 All Open Graph and social meta tags are generated from your Notion content, which makes social sharing look professional by default.
 
-Social images are generated automatically using [Vercel OG Image Generation](https://vercel.com/docs/concepts/functions/edge-functions/og-image-generation). You can tweak the default React template for social images by editing [api/social-images.tsx](./pages/api/social-image.tsx).
+Social images are generated automatically using [Vercel OG Image Generation](https://vercel.com/docs/concepts/functions/edge-functions/og-image-generation). You can tweak the default React template for social images by editing [route.tsx](./app/api/social-image/route.tsx).
 
 You can view an example social image live in production [here](https://transitivebullsh.it/api/social-image?id=dfc7f709-ae3e-42c6-9292-f6543d5586f0).
 
@@ -183,4 +214,4 @@ See the [contribution guide](contributing.md) and join our amazing list of [cont
 
 MIT © [Travis Fischer](https://transitivebullsh.it)
 
-Support my open source work by <a href="https://twitter.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a>
+Support my open source work by <a href="https://x.com/transitive_bs">following me on twitter <img src="https://storage.googleapis.com/saasify-assets/twitter-logo.svg" alt="twitter" height="24px" align="center"></a>
